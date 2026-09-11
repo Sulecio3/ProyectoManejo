@@ -1,8 +1,43 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, filedialog, colorchooser
 
 def abrir_settings():
-    messagebox.showinfo("Settings", "Aquí configuraremos el archivo JSON luego")
+    ventana_settings = tk.Toplevel(root)
+    ventana_settings.title("Configuración de Usuario")
+    ventana_settings.geometry("300x400")
+
+    tk.Label(ventana_settings, text="Nombre de usuario:").pack(pady=2)
+    entry_usuario = tk.Entry(ventana_settings)
+    entry_usuario.pack(pady=2)
+
+    tk.Label(ventana_settings, text="Tema (claro/oscuro):").pack(pady=2)
+    entry_tema = tk.Entry(ventana_settings)
+    entry_tema.pack(pady=2)
+
+    tk.Label(ventana_settings, text="Idioma (es/en):").pack(pady=2)
+    entry_idioma = tk.Entry(ventana_settings)
+    entry_idioma.pack(pady=2)
+
+    tk.Label(ventana_settings, text="Tamaño de fuente:").pack(pady=2)
+    entry_fuente = tk.Entry(ventana_settings)
+    entry_fuente.pack(pady=2)
+
+    def elegir_color_barra():
+        colorchooser.askcolor(title="Elegir color de barra")
+        
+    tk.Button(ventana_settings, text="Color Barra Menú", command=elegir_color_barra).pack(pady=5)
+
+    def elegir_color_letra():
+        colorchooser.askcolor(title="Elegir color de letra")
+        
+    tk.Button(ventana_settings, text="Color de Letra", command=elegir_color_letra).pack(pady=5)
+
+    def elegir_foto():
+        filedialog.askopenfilename(title="Seleccionar foto de perfil")
+
+    tk.Button(ventana_settings, text="Seleccionar Foto", command=elegir_foto).pack(pady=5)
+
+    tk.Button(ventana_settings, text="Guardar (Simulado)").pack(pady=10)
 
 root = tk.Tk()
 root.title("App de Configuracion")
