@@ -3,6 +3,29 @@ from tkinter import messagebox, filedialog, colorchooser
 import json
 import os
 
+CONFIG_FILE = "config.json"
+
+DEFAULT_CONFIG = {
+    "nombre_usuario": "Usuario",
+    "tema": "claro",
+    "idioma": "es",
+    "tamano_fuente": 12,
+    "color_barra": "#FFFFFF",
+    "color_letra": "#000000",
+    "foto_perfil": ""
+}
+
+def cargar_configuracion():
+    if not os.path.exists(CONFIG_FILE):
+        return DEFAULT_CONFIG.copy()
+    try:
+        with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except:
+        return DEFAULT_CONFIG.copy()
+
+config_actual = cargar_configuracion()
+
 def abrir_settings():
     ventana_settings = tk.Toplevel(root)
     ventana_settings.title("Configuracion de Usuario")
@@ -46,7 +69,6 @@ root.title("App de Configuracion")
 root.geometry("1800x900")
 
 menubar = tk.Menu(root)
-
 menu_archivo = tk.Menu(menubar, tearoff=0)
 menu_archivo.add_command(label="Nuevo")
 menu_archivo.add_separator()
