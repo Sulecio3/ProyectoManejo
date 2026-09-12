@@ -1,10 +1,12 @@
 import tkinter as tk
 from tkinter import messagebox, filedialog, colorchooser
+import json
+import os
 
 def abrir_settings():
     ventana_settings = tk.Toplevel(root)
-    ventana_settings.title("Configuración de Usuario")
-    ventana_settings.geometry("300x400")
+    ventana_settings.title("Configuracion de Usuario")
+    ventana_settings.geometry("600x600")
 
     tk.Label(ventana_settings, text="Nombre de usuario:").pack(pady=2)
     entry_usuario = tk.Entry(ventana_settings)
@@ -25,7 +27,7 @@ def abrir_settings():
     def elegir_color_barra():
         colorchooser.askcolor(title="Elegir color de barra")
         
-    tk.Button(ventana_settings, text="Color Barra Menú", command=elegir_color_barra).pack(pady=5)
+    tk.Button(ventana_settings, text="Color Barra Menu", command=elegir_color_barra).pack(pady=5)
 
     def elegir_color_letra():
         colorchooser.askcolor(title="Elegir color de letra")
@@ -37,7 +39,7 @@ def abrir_settings():
 
     tk.Button(ventana_settings, text="Seleccionar Foto", command=elegir_foto).pack(pady=5)
 
-    tk.Button(ventana_settings, text="Guardar (Simulado)").pack(pady=10)
+    tk.Button(ventana_settings, text="Guardar").pack(pady=10)
 
 root = tk.Tk()
 root.title("App de Configuracion")
