@@ -33,18 +33,22 @@ def abrir_settings():
 
     tk.Label(ventana_settings, text="Nombre de usuario:").pack(pady=2)
     entry_usuario = tk.Entry(ventana_settings)
+    entry_usuario.insert(0, config_actual.get("nombre_usuario", ""))
     entry_usuario.pack(pady=2)
 
     tk.Label(ventana_settings, text="Tema (claro/oscuro):").pack(pady=2)
     entry_tema = tk.Entry(ventana_settings)
+    entry_tema.insert(0, config_actual.get("tema", ""))
     entry_tema.pack(pady=2)
 
     tk.Label(ventana_settings, text="Idioma (es/en):").pack(pady=2)
     entry_idioma = tk.Entry(ventana_settings)
+    entry_idioma.insert(0, config_actual.get("idioma", ""))
     entry_idioma.pack(pady=2)
 
     tk.Label(ventana_settings, text="Tamaño de fuente:").pack(pady=2)
     entry_fuente = tk.Entry(ventana_settings)
+    entry_fuente.insert(0, str(config_actual.get("tamano_fuente", "")))
     entry_fuente.pack(pady=2)
 
     def elegir_color_barra():
