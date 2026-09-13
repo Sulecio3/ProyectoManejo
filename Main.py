@@ -92,7 +92,14 @@ def abrir_settings():
         config_actual["color_barra"] = color_barra_temp
         config_actual["color_letra"] = color_letra_temp
         config_actual["foto_perfil"] = foto_temp
-        messagebox.showinfo("Exito", "Datos capturados temporalmente")
+        
+        try:
+            with open("config.tmp", "w", encoding="utf-8") as f:
+                json.dump(config_actual, f, ensure_ascii=False, indent=4)
+            os.replace("config.tmp", CONFIG_FILE)
+            messagebox.showinfo("Exito", "Configuracion guardada exitosamente")
+        except Exception as e:
+            messagebox.showerror("Error", "Ocurrio un problema al guardar")
 
     tk.Button(ventana_settings, text="Guardar", command=guardar).pack(pady=10)
 
