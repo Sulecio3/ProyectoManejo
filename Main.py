@@ -94,10 +94,13 @@ def abrir_settings():
         config_actual["foto_perfil"] = foto_temp
         
         try:
+            if os.path.exists(CONFIG_FILE):
+                shutil.copy(CONFIG_FILE, "config.bak")
+                
             with open("config.tmp", "w", encoding="utf-8") as f:
                 json.dump(config_actual, f, ensure_ascii=False, indent=4)
             os.replace("config.tmp", CONFIG_FILE)
-            messagebox.showinfo("Exito", "Configuracion guardada exitosamente")
+            messagebox.showinfo("Exito", "Configuracion guardada y respaldada")
         except Exception as e:
             messagebox.showerror("Error", "Ocurrio un problema al guardar")
 
