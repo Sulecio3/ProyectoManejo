@@ -22,6 +22,12 @@ def cargar_configuracion():
     try:
         with open(CONFIG_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
+    except json.JSONDecodeError:
+        messagebox.showwarning("Aviso", "El archivo esta corrupto, se va a usar valores por defecto")
+        return DEFAULT_CONFIG.copy()
+    except PermissionError:
+        messagebox.showerror("Error", "No hay permisos para leer el archvo")
+        return DEFAULT_CONFIG.copy()
     except:
         return DEFAULT_CONFIG.copy()
 
@@ -101,6 +107,8 @@ def abrir_settings():
                 json.dump(config_actual, f, ensure_ascii=False, indent=4)
             os.replace("config.tmp", CONFIG_FILE)
             messagebox.showinfo("Exito", "Configuracion guardada y respaldada")
+        except PermissionError:
+            messagebox.showerror("Error", "Sin permisos para escribir el archivo")
         except Exception as e:
             messagebox.showerror("Error", "Ocurrio un problema al guardar")
 
