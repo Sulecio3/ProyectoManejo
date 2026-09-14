@@ -36,6 +36,27 @@ color_barra_temp = config_actual.get("color_barra", "#FFFFFF")
 color_letra_temp = config_actual.get("color_letra", "#000000")
 foto_temp = config_actual.get("foto_perfil", "")
 
+def aplicar_configuracion():
+    try:
+        fuente = ("Arial", config_actual.get("tamano_fuente", 12))
+        lbl_bienvenida.config(
+            text=f"Bienvenido, {config_actual.get('nombre_usuario', 'Usuario')}",
+            font=fuente,
+            fg=config_actual.get("color_letra", "#000000")
+        )
+        if config_actual.get("tema") == "oscuro":
+            root.config(bg="#333333")
+            lbl_bienvenida.config(bg="#333333")
+        else:
+            root.config(bg="#FFFFFF")
+            lbl_bienvenida.config(bg="#FFFFFF")
+        menubar.config(
+            bg=config_actual.get("color_barra", "#FFFFFF"),
+            fg=config_actual.get("color_letra", "#000000")
+        )
+    except:
+        pass
+
 def abrir_settings():
     global color_barra_temp, color_letra_temp, foto_temp
     
@@ -106,7 +127,10 @@ def abrir_settings():
             with open("config.tmp", "w", encoding="utf-8") as f:
                 json.dump(config_actual, f, ensure_ascii=False, indent=4)
             os.replace("config.tmp", CONFIG_FILE)
-            messagebox.showinfo("Exito", "Configuracion guardada y respaldada")
+            
+            aplicar_configuracion()
+            messagebox.showinfo("Exito", "Configuracion guardada y aplicada")
+            ventana_settings.destroy()
         except PermissionError:
             messagebox.showerror("Error", "Sin permisos para escribir el archivo")
         except Exception as e:
@@ -133,4 +157,10 @@ menubar.add_cascade(label="Ver", menu=menu_ver)
 menubar.add_command(label="Settings", command=abrir_settings)
 
 root.config(menu=menubar)
+
+lbl_bienvenida = tk.Label(root, text="Bienvenido")
+lbl_bienvenida.pack(expand=True)
+
+aplicar_configuracion()
+
 root.mainloop()
