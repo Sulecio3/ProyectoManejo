@@ -35,8 +35,10 @@ config_actual = cargar_configuracion()
 color_barra_temp = config_actual.get("color_barra", "#FFFFFF")
 color_letra_temp = config_actual.get("color_letra", "#000000")
 foto_temp = config_actual.get("foto_perfil", "")
+img_perfil = None
 
 def aplicar_configuracion():
+    global img_perfil
     try:
         fuente = ("Arial", config_actual.get("tamano_fuente", 12))
         lbl_bienvenida.config(
@@ -44,16 +46,27 @@ def aplicar_configuracion():
             font=fuente,
             fg=config_actual.get("color_letra", "#000000")
         )
-        if config_actual.get("tema") == "oscuro":
+        if config_actual.get("tema", "").lower() == "oscuro":
             root.config(bg="#333333")
             lbl_bienvenida.config(bg="#333333")
+            lbl_imagen.config(bg="#333333")
         else:
             root.config(bg="#FFFFFF")
             lbl_bienvenida.config(bg="#FFFFFF")
-        menubar.config(
-            bg=config_actual.get("color_barra", "#FFFFFF"),
-            fg=config_actual.get("color_letra", "#000000")
-        )
+            lbl_imagen.config(bg="#FFFFFF")
+        
+        color_b = config_actual.get("color_barra", "#FFFFFF")
+        color_l = config_actual.get("color_letra", "#000000")
+        barra_menu.config(bg=color_b)
+        btn_archivo.config(bg=color_b, fg=color_l)
+        btn_edicion.config(bg=color_b, fg=color_l)
+        btn_ver.config(bg=color_b, fg=color_l)
+        btn_settings.config(bg=color_b, fg=color_l)
+        
+        ruta_foto = config_actual.get("foto_perfil", "")
+        if ruta_foto and os.path.exists(ruta_foto):
+            img_perfil = tk.PhotoImage(file=ruta_foto)
+            lbl_imagen.config(image=img_perfil)
     except:
         pass
 
@@ -142,25 +155,36 @@ root = tk.Tk()
 root.title("App de Configuracion")
 root.geometry("1800x900")
 
-menubar = tk.Menu(root)
-menu_archivo = tk.Menu(menubar, tearoff=0)
+barra_menu = tk.Frame(root)
+barra_menu.pack(side=tk.TOP, fill=tk.X)
+
+btn_archivo = tk.Menubutton(barra_menu, text="Archivo", relief=tk.FLAT)
+menu_archivo = tk.Menu(btn_archivo, tearoff=0)
 menu_archivo.add_command(label="Nuevo")
 menu_archivo.add_separator()
 menu_archivo.add_command(label="Salir", command=root.quit)
-menubar.add_cascade(label="Archivo", menu=menu_archivo)
-menu_edicion = tk.Menu(menubar, tearoff=0)
+btn_archivo.config(menu=menu_archivo)
+btn_archivo.pack(side=tk.LEFT, padx=5, pady=2)
+
+btn_edicion = tk.Menubutton(barra_menu, text="Edicion", relief=tk.FLAT)
+menu_edicion = tk.Menu(btn_edicion, tearoff=0)
 menu_edicion.add_command(label="Copiar")
-menubar.add_cascade(label="Edicion", menu=menu_edicion)
-menu_ver = tk.Menu(menubar, tearoff=0)
+btn_edicion.config(menu=menu_edicion)
+btn_edicion.pack(side=tk.LEFT, padx=5, pady=2)
+
+btn_ver = tk.Menubutton(barra_menu, text="Ver", relief=tk.FLAT)
+menu_ver = tk.Menu(btn_ver, tearoff=0)
 menu_ver.add_command(label="Zoom")
-menubar.add_cascade(label="Ver", menu=menu_ver)
-menubar.add_command(label="Settings", command=abrir_settings)
+btn_ver.config(menu=menu_ver)
+btn_ver.pack(side=tk.LEFT, padx=5, pady=2)
 
-root.config(menu=menubar)
+btn_settings = tk.Button(barra_menu, text="Settings", command=abrir_settings, relief=tk.FLAT)
+btn_settings.pack(side=tk.LEFT, padx=5, pady=2)
 
+lbl_imagen = tk.Label(root)
+lbl_imagen.pack(pady=20)
 lbl_bienvenida = tk.Label(root, text="Bienvenido")
 lbl_bienvenida.pack(expand=True)
 
 aplicar_configuracion()
-
 root.mainloop()
